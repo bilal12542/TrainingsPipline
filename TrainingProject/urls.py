@@ -15,11 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('user.url')),
-    path('server/', include('server.url')),
-    # path('admin/moniter/', views.moniter, name='moniter'),
+    path('user/', include('user.urls')),
+    path('server/', include('server.urls')),
 ]
