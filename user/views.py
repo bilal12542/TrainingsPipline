@@ -48,3 +48,6 @@ def user_login(request):
 
 def reservation(request):
     return render(request,'user/login/reservation.html')
+
+def book(request):
+    return render(request , 'user/login/Book.html')

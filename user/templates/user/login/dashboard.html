@@ -48,7 +48,7 @@ tr:nth-child(even) {
       <td>{{ data.available }}</td>
       <td>
           {% if data.available == True %}
-          <button type="button" onclick="" class="btn btn-success">Book</button>
+          <button type="button" onclick="location.href='{% url 'Book' %}'" class="btn btn-success">Book</button>
           {% endif %}
           <button type="button" onclick="location.href='{% url 'reservation' %}'" class="btn btn-warning">Reserve</button>
       </td>

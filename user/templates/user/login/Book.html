@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- load static file -->
+{% load static %}
+
+<html lang="en">
+  <head>
+          <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        background-color: #d4d1f0;
+        align-items: center;
+        margin: 10px;
+        padding: 2rem 1.5rem;
+        font: 1rem/1.5 "PT Sans", Arial, sans-serif;
+        color: #5a5a5a;
+      }
+      .btn {
+        background-color: #626662;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+      .btn1 {
+        background-color: #626662;
+        border: none;
+        color: white;
+        margin-left: 190px;
+        margin-top: 30px;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+    </style>
+    <title>Django</title>
+  </head>
+  <body>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="file" aria-label="File browser example" />
+
+    <button type="submit" class="btn">Upload</button>
+
+    </form>
+  </form>
+  <form method="post">
+   <input type="checkbox" name="model" value="1" class="btn1" />
+    <button type="submit" >Model</button>
+    </form>
+    <form>
+      {% csrf_token %}
+    <button onclick="location.href='{% url 'Book' %}'" type="button" >Run</button>
+    </form>
+    <br />
+  </body>
+
+</html>
