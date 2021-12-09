@@ -1,13 +1,12 @@
 import sys
-
-sys.path.append("..")
-
 from django.shortcuts import render, redirect
 from .models import User
 from server.models import ServerManagement
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from .form import AddReservation
+from server.models import ServerReservation
 
-
+sys.path.append("..")
 # Create your views here.
 
 
@@ -38,8 +37,20 @@ def user_login(request):
 
 def reservation(request):
     if request.method == 'POST':
-        return render(request, 'user/login/dashboard.html')
-    return render(request, 'user/login/reservation.html')
+        # create a form instance and populate it with data from the request:
+        form = AddReservation(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            form.save()
+            # redirect to a new URL:
+            return HttpResponseRedirect('/dashboard/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = AddReservation()
+    return render(request, 'user/login/reservation.html', {'form': form})
 
 
 def book(request):

@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         table {
   font-family: arial, sans-serif;
@@ -26,6 +25,7 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
     </style>
     <meta charset="UTF-8">
     <title>Server Availablity </title>
@@ -35,27 +35,27 @@ tr:nth-child(even) {
 
 <table>
     <tr>
-    <th>Server Name</th>
-    <th>Ram</th>
-    <th>Processor</th>
+        <th>Server Name</th>
+        <th>Ram</th>
+        <th>Processor</th>
         <th>Availablity</th>
-  </tr>
-{% for data in ServerData %}
-  <tr>
-      <td> {{ data.servername }} </td>
-      <td>{{ data.ram }}</td>
-      <td>{{ data.processor }}</td>
-      <td>{{ data.available }}</td>
-      <td>
-          {% if data.available == True %}
-          <button type="button" onclick="location.href='{% url 'Book' %}'" class="btn btn-success">Book</button>
-          {% endif %}
-          <button type="button" onclick="location.href='{% url 'reservation' %}'" class="btn btn-warning">Reserve</button>
-      </td>
-  </tr>
-{% endfor %}
+    </tr>
+    {% for data in ServerData %}
+    <tr>
+        <td> {{ data.servername }}</td>
+        <td>{{ data.ram }}</td>
+        <td>{{ data.processor }}</td>
+        <td>{{ data.available }}</td>
+        <td>
+            {% if data.available == True %}
+            <button type="button" onclick="location.href='{% url 'Book' %}'" class="btn btn-success">Book</button>
+            {% endif %}
+            <button type="button" onclick="location.href='{% url 'reservation' %}'" class="btn btn-warning">Reserve
+            </button>
+        </td>
+    </tr>
+    {% endfor %}
 </table>
-
 
 
 </body>
