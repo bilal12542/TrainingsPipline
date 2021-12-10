@@ -32,7 +32,7 @@
 
       .btn {
         position: absolute;
-        top: 72px;
+        top: 45px;
         right: 0;
         background-color:  #419742;;
         border: none;
@@ -55,42 +55,73 @@
         display: inline-block;
         font-size: 16px;
       }
+      .dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
     </style>
     <title>Django</title>
   </head>
   <body>
-  <p>
-     Server Name: {{internal_id}}
-  </p>
   <form method="post" enctype="multipart/form-data" action="Booki">
     {% csrf_token %}
-      <label class="form-label" for="customFile">Enter your Zip File</label>
-    <input type="file"  class="form-control" name="file" aria-label="File browser example" />
-
-    <button type="submit" class="btn btn-danger" name="dataUpload"  value="{{internal_id}}">Upload</button>
+    <label class="form-label" for="customFile">Enter your Zip File</label>
+    <input type="file"  class="form-control" name="files" aria-label="File browser example" />
+    <button type="submit" class="btn btn-danger">Upload</button>
     </form>
 
-
-  <div class="form-check">
+      <div class="form-check">
   <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
   <label class="form-check-label" for="flexCheckIndeterminate">
     Augmentation
   </label>
 </div>
 
+
+
 <div class="dropdown">
-  <button class="btn1 btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-
-
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" >Yolo</a>
-    <a class="dropdown-item" href="#">Mask Rcnn</a>
-    <a class="dropdown-item" href="#">Ynet</a>
+  <button class="dropbtn">Dropdown</button>
+  <div class="dropdown-content">
+  <a href="#">Yolo </a>
+  <a href="#">Unet</a>
+  <a href="#">Mask Rccn</a>
   </div>
 </div>
-
 
   </body>
 

@@ -5,16 +5,15 @@ from server.models import ServerManagement
 from django.http import HttpResponseRedirect
 from .form import AddReservation
 from server.models import ServerReservation
-import os
 from pathlib import Path
+import  os
 from django.core.files.storage import FileSystemStorage
-from .client import SendFile
+from .client import *
+parentdir = Path(os.getcwd())
+
 
 sys.path.append("..")
 # Create your views here.
-
-parentdir = Path(os.getcwd())
-
 
 def deletezip():
     for f in Path(os.path.join(parentdir, 'media')).glob('*.zip'):
@@ -25,17 +24,18 @@ def deletezip():
 
 
 def upload(request):
+    print("helloo hellooo")
+
     if request.method == "POST":
         if os.listdir(os.path.join(parentdir, 'media')):
             deletezip()
-        uploaded_file = request.FILES['file']
+        uploaded_file = request.FILES['files']
+        print(uploaded_file)
         fs = FileSystemStorage()
         fs.save(uploaded_file.name, uploaded_file)
-        internal_id = request.POST.get('dataUpload')
-        #print(internal_id)
-        SendFile(internal_id)
+        sendZip()
+    return render(request, 'user/login/booked.html')
 
-    return render(request, 'user/login/dashboard.html')
 
 
 def index(request):
@@ -82,9 +82,12 @@ def reservation(request):
 
 
 def book(request):
-    if request.method == 'POST':
-        internal = request.POST.get('internal-id')
-    return render(request, 'user/login/booked.html', {'internal_id': internal})
+    return render(request, 'user/login/booked.html')
+
+
+parentdir = Path(os.getcwd())
+
+
 
 
 def dashboard(request):
@@ -92,7 +95,6 @@ def dashboard(request):
 
 
 def available_server(request):
-    server_res = ServerReservation.objects.all()
     wal = ServerManagement.objects.all()
     dt = []
     for i in wal:
