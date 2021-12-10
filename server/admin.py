@@ -4,6 +4,7 @@ from django.utils.html import format_html
 
 
 class ServerAdmin(admin.ModelAdmin):
+    exclude = ['server_name']
     # actions = ['online_Server', 'offline_Server']
     list_display = ('server_name', "server_status", 'enable')
     list_editable = ['enable']
