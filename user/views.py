@@ -8,7 +8,8 @@ from server.models import ServerReservation
 import os
 from pathlib import Path
 from django.core.files.storage import FileSystemStorage
-from client import *
+from .client import SendFile
+
 sys.path.append("..")
 # Create your views here.
 
@@ -30,8 +31,11 @@ def upload(request):
         uploaded_file = request.FILES['file']
         fs = FileSystemStorage()
         fs.save(uploaded_file.name, uploaded_file)
+        internal_id = request.POST.get('dataUpload')
+        #print(internal_id)
+        SendFile(internal_id)
 
-    return render(request, 'user/login/booked.html')
+    return render(request, 'user/login/dashboard.html')
 
 
 def index(request):
@@ -79,8 +83,8 @@ def reservation(request):
 
 def book(request):
     if request.method == 'POST':
-        internal_id = request.POST.get('internal-id')
-    return render(request, 'user/login/booked.html', {'internal_id': internal_id})
+        internal = request.POST.get('internal-id')
+    return render(request, 'user/login/booked.html', {'internal_id': internal})
 
 
 def dashboard(request):

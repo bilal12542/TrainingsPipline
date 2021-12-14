@@ -8,5 +8,5 @@ urlpatterns = [
     path('available-server/Book', views.book, name='Book'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('available-server/', views.available_server, name='available-server'),
-    path('Booki', views.upload, name='Booki'),
+    path('available-server/Booki', views.upload, name='Booki'),
 ]
