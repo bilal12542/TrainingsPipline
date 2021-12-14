@@ -33,6 +33,8 @@ tr:nth-child(even) {
 <body>
 <h2>Available Servers</h2>
 
+
+
 <table>
     <tr>
         <th>Server Name</th>
@@ -48,7 +50,10 @@ tr:nth-child(even) {
         <td>{{ data.available }}</td>
         <td>
             {% if data.available == True %}
-            <button type="button" onclick="location.href='{% url 'Book' %}'" class="btn btn-success">Book</button>
+            <form method='post' action="Book">
+                {% csrf_token %}
+            <input  type="submit"  class="btn btn-success" name='internal-id' value="{{data.servername}}" ></input>
+            </form>
             {% endif %}
             <button type="button" onclick="location.href='{% url 'reservation' %}'" class="btn btn-warning">Reserve
             </button>

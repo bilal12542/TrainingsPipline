@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!-- load static file -->
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+           <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      body {
+        background-color: #d5e1df;
+        align-items: center;
+        margin: 10px;
+        padding: 2rem 1.5rem;
+        font: 1rem/1.5 "PT Sans", Arial, sans-serif;
+        color: #5a5a5a;
+      }
+      .form-control {
+        width: 90%;
+        height: 38px;
+         padding: 8px 12px;
+      }
+
+      .btn {
+        position: absolute;
+        top: 72px;
+        right: 0;
+        background-color:  #419742;;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 10px;
+      }
+      .btn1 {
+        background-color: #626662;
+        border: none;
+        color: white;
+        margin-left: 190px;
+        margin-top: 30px;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+    </style>
+    <title>Django</title>
+  </head>
+  <body>
+  <p>
+     Server Name: {{internal_id}}
+  </p>
+  <form method="post" enctype="multipart/form-data" action="Booki">
+    {% csrf_token %}
+      <label class="form-label" for="customFile">Enter your Zip File</label>
+    <input type="file"  class="form-control" name="file" aria-label="File browser example" />
+
+    <button type="submit" class="btn btn-danger">Upload</button>
+    </form>
+
+
+  <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+  <label class="form-check-label" for="flexCheckIndeterminate">
+    Augmentation
+  </label>
+</div>
+
+<div class="dropdown">
+  <button class="btn1 btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown button
+  </button>
+
+
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" >Yolo</a>
+    <a class="dropdown-item" href="#">Mask Rcnn</a>
+    <a class="dropdown-item" href="#">Ynet</a>
+  </div>
+</div>
+
+
+  </body>
+
+</html>

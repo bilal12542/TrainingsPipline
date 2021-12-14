@@ -11,7 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         s = socket.socket()
         print("Socket Created")
-        s.bind(('192.168.88.193', 5001))
+        s.bind(('192.168.88.140', 5001))
         s.listen(4)
         print("waiting for connections")
 
