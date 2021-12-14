@@ -5,16 +5,29 @@ from server.models import ServerManagement
 from django.http import HttpResponseRedirect
 from .form import AddReservation
 from server.models import ServerReservation
+<<<<<<< HEAD
+import os
+from pathlib import Path
+from django.core.files.storage import FileSystemStorage
+from .client import SendFile
+=======
 from pathlib import Path
 import  os
 from django.core.files.storage import FileSystemStorage
 from .client import *
 parentdir = Path(os.getcwd())
 
+>>>>>>> 2052d2b (poosh popsh poshi posh poosh)
 
 sys.path.append("..")
 # Create your views here.
 
+<<<<<<< HEAD
+parentdir = Path(os.getcwd())
+
+
+=======
+>>>>>>> 2052d2b (poosh popsh poshi posh poosh)
 def deletezip():
     for f in Path(os.path.join(parentdir, 'media')).glob('*.zip'):
         try:
@@ -24,6 +37,19 @@ def deletezip():
 
 
 def upload(request):
+<<<<<<< HEAD
+    if request.method == "POST":
+        if os.listdir(os.path.join(parentdir, 'media')):
+            deletezip()
+        uploaded_file = request.FILES['file']
+        fs = FileSystemStorage()
+        fs.save(uploaded_file.name, uploaded_file)
+        internal_id = request.POST.get('dataUpload')
+        #print(internal_id)
+        SendFile(internal_id)
+
+    return render(request, 'user/login/dashboard.html')
+=======
     print("helloo hellooo")
 
     if request.method == "POST":
@@ -36,6 +62,7 @@ def upload(request):
         sendZip()
     return render(request, 'user/login/booked.html')
 
+>>>>>>> 2052d2b (poosh popsh poshi posh poosh)
 
 
 def index(request):
@@ -82,7 +109,9 @@ def reservation(request):
 
 
 def book(request):
-    return render(request, 'user/login/booked.html')
+    if request.method == 'POST':
+        internal = request.POST.get('internal-id')
+    return render(request, 'user/login/booked.html', {'internal_id': internal})
 
 
 parentdir = Path(os.getcwd())
@@ -95,6 +124,7 @@ def dashboard(request):
 
 
 def available_server(request):
+    server_res = ServerReservation.objects.all()
     wal = ServerManagement.objects.all()
     dt = []
     for i in wal:

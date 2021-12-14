@@ -10,6 +10,8 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
+<<<<<<< HEAD
+=======
 
     body {
         background-color: #d5e1df;
@@ -19,6 +21,7 @@
         font: 1rem/1.5 "PT Sans", Arial, sans-serif;
         color: #5a5a5a;
       }
+>>>>>>> ba52be7 (poosh popsh poshi posh)
         table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -42,6 +45,11 @@ tr:nth-child(even) {
 <body>
 <h2>Available Servers</h2>
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> ba52be7 (poosh popsh poshi posh)
 <table>
     <tr>
         <th>Server Name</th>
@@ -57,7 +65,14 @@ tr:nth-child(even) {
         <td>{{ data.available }}</td>
         <td>
             {% if data.available == True %}
+<<<<<<< HEAD
+            <form method='post' action="Book">
+                {% csrf_token %}
+            <input  type="submit"  class="btn btn-success" name='internal-id' value="{{data.servername}}" ></input>
+            </form>
+=======
             <button type="button" onclick="location.href='{% url 'Book' %}'" class="btn btn-success">Book</button>
+>>>>>>> ba52be7 (poosh popsh poshi posh)
             {% endif %}
             <button type="button" onclick="location.href='{% url 'reservation' %}'" class="btn btn-warning">Reserve
             </button>
