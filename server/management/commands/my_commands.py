@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 import socket
-from server.models import ServerManagement
+from server.models import ServerManagement, CpuUsage
 import ast
 import threading
 from queue import Queue
@@ -27,8 +27,8 @@ def bind_socket():
         global host
         global port
         global s
-        hostname = socket.gethostname()
-        IPAddr = socket.gethostbyname(hostname)
+        # hostname = socket.gethostname()
+        # IPAddr = socket.gethostbyname(hostname)
         host = '192.168.88.193'
         port = 5001
         print("Connection established: " + str(host) + ':' + str(port))
@@ -41,16 +41,14 @@ def bind_socket():
 
 
 def accepting_connections():
-    for c in all_connections:
-        c.close()
-    del all_address[:]
-    del all_connections[:]
     while True:
-        c, address = s.accept()
-        all_address.append(address)
-        all_connections.append(c)
-        print("Established connections:", address[0])
-        time.sleep(1)
+        try:
+            c, address = s.accept()
+            all_address.append(address)
+            all_connections.append(c)
+            print("Established connections:", address[0])
+        except:
+            print("error in establishing connection with client.")
 
 
 def server_status_update():
@@ -60,21 +58,28 @@ def server_status_update():
                 data = conn.recv(1024)
                 ls = ast.literal_eval(data.decode("utf-8"))
                 server_name = ls[0]
-                ip_addr = all_address[i][0]
-                if not ServerManagement.objects.filter(server_name=server_name, ip_addr=ip_addr).exists():
-                    processor = ls[2]
-                    ram = ls[3]
-                    ServerManagement.objects.create(server_name=server_name, ip_addr=ip_addr, ram=ram,
+                if not ServerManagement.objects.filter(server_name=server_name, ip_addr=all_address[i][0]).exists():
+                    processor = ls[1]
+                    ram = ls[2]
+                    print()
+                    ServerManagement.objects.create(server_name=server_name, ip_addr=all_address[i][0], ram=ram,
                                                     processor=processor, enable=True)
-                elif not ServerManagement.objects.filter(server_name=server_name, ip_addr=ip_addr,
+                elif ServerManagement.objects.filter(server_name=server_name, ip_addr=all_address[i][0],
                                                          enable=False).exists():
-                    ServerManagement.objects.filter(server_name=server_name, ip_addr=ip_addr).update(
+                    ServerManagement.objects.filter(server_name=server_name, ip_addr=all_address[i][0]).update(
                         enable=True)
+                elif ServerManagement.objects.filter(server_name=server_name, ip_addr=all_address[i][0],
+                                                         enable=True).exists():
+                    result = ServerManagement.objects.get(server_name=server_name, ip_addr=all_address[i][0])
+                    CpuUsage.objects.create(server_id=result, cpu=ls[3], ram=0)
+
             except:
-                ServerManagement.objects.filter(server_name=server_name, ip_addr=ip_addr).update(enable=False)
+                result = ServerManagement.objects.filter(ip_addr__iexact=all_address[i][0]).update(enable=False)
+                CpuUsage.objects.filter(server_id__gt=result).delete()
+                print("Connection is lost! Ip: ", all_address[i][0])
                 del all_connections[i]
                 del all_address[i]
-                break
+
 
 
 # Create worker threads
@@ -95,7 +100,6 @@ def work():
             accepting_connections()
         if x == 2:
             server_status_update()
-        time.sleep(1)
         queue.task_done()
 
 

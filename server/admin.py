@@ -47,3 +47,5 @@ class ReservationAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(ServerManagement, ServerAdmin)
 admin.site.register(ServerReservation, ReservationAdmin)
+
+admin.site.register(CpuUsage)

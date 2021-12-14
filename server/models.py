@@ -38,3 +38,8 @@ class ServerReservation(models.Model):
     #     if self.end_time > timezone.now().strftime('%Y-%m-%d %H:%M:%S'):
     #         return False
     #     return True
+
+class CpuUsage(models.Model):
+    server_id = models.ForeignKey(ServerManagement, on_delete=models.CASCADE)
+    cpu = models.FloatField(default=0)
+    ram = models.FloatField(default=0)
