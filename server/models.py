@@ -16,7 +16,7 @@ class ServerManagement(models.Model):
     enable = models.BooleanField(default=False, null=False)
 
     # class Meta:
-    #     constraints = [models.CheckConstraint(check=Q(server_name__gte='Server'), name="server name")]
+    #     constraints = [models.CheckConstraint(check=Q(enable__gte='Server'), name="server name")]
 
     def __str__(self):
         return self.server_name
@@ -29,8 +29,10 @@ class ServerReservation(models.Model):
     end_time = models.DateTimeField(default=timezone.now() + datetime.timedelta(hours=2))
 
     def clean(self):
-        if self.reservation_time > self.end_time:
-            raise ValidationError('Start date is after end date')
+        if self.reservation_time > self.end_time :
+            raise ValidationError('reservation time date is after end time.')
+        elif timezone.now() > self.reservation_time:
+            raise ValidationError('reservation time date is before current time.')
     # @property
     # def available(self):
     #     if self.end_time > timezone.now().strftime('%Y-%m-%d %H:%M:%S'):
