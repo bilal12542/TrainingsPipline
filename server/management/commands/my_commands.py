@@ -29,7 +29,7 @@ def bind_socket():
         global s
         # hostname = socket.gethostname()
         # IPAddr = socket.gethostbyname(hostname)
-        host = '192.168.88.193'
+        host = '192.168.88.140'
         port = 5001
         print("Connection established: " + str(host) + ':' + str(port))
         s.bind((host, port))
@@ -114,20 +114,3 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         create_workers()
         create_jobs()
-
-
-# print("Connected with ", addr)
-# c.send(bytes("Welcome to my Server", "utf-8"))
-# data = c.recv(2020)
-# # ls = data.decode("utf-8").strip('][').split(', ')
-
-# if not ServerManagement.objects.filter(server_name=server_name, ip_addr=ip_addr).exists():
-#     processor = ls[2]
-#     ram = ls[3]
-#     ServerManagement.objects.create(server_name=server_name, ip_addr=ip_addr, ram=ram,
-#                                     processor=processor, enable=True)
-# else:
-#     if addr is not None:
-#         print(ls)
-#     else:
-#         print("host is lost!")
