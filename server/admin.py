@@ -44,8 +44,11 @@ class ReservationAdmin(admin.ModelAdmin):
             return "Completed"
         return "On waiting"
 
+class CpuUsageAdmin(admin.ModelAdmin):
+    list_display = ('server_id', 'cpu', 'ram')
+
 # Register your models here.
 admin.site.register(ServerManagement, ServerAdmin)
 admin.site.register(ServerReservation, ReservationAdmin)
 
-admin.site.register(CpuUsage)
+admin.site.register(CpuUsage, CpuUsageAdmin)

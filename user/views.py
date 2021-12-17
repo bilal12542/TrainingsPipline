@@ -5,7 +5,7 @@ from server.models import ServerManagement
 from django.http import HttpResponseRedirect
 from .form import AddReservation
 from server.models import ServerReservation
-
+from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from .client import *
 parentdir = Path(os.getcwd())
@@ -64,7 +64,10 @@ def user_login(request):
 
 
 def reservation(request):
+
     if request.method == 'POST':
+        abc = request.POST.get('res-id')
+        print(abc)
         # create a form instance and populate it with data from the request:
         form = AddReservation(request.POST)
         # check whether it's valid:

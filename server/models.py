@@ -43,3 +43,4 @@ class CpuUsage(models.Model):
     server_id = models.ForeignKey(ServerManagement, on_delete=models.CASCADE)
     cpu = models.FloatField(default=0)
     ram = models.FloatField(default=0)
+
