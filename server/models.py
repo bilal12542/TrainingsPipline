@@ -27,7 +27,7 @@ class ServerReservation(models.Model):
     server_id = models.ForeignKey(ServerManagement, on_delete=models.CASCADE)
     user_id = models.ForeignKey(django.contrib.auth.models.User, on_delete=models.CASCADE)
     reservation_time = models.DateTimeField(default=timezone.now)
-    end_time = models.DateTimeField(default=timezone.now() + datetime.timedelta(hours=2))
+    end_time = models.DateTimeField(default=timezone.now)
 
     def clean(self):
         if self.reservation_time > self.end_time:

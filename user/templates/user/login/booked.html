@@ -98,37 +98,32 @@
     <title>Django</title>
   </head>
   <body>
+
+  {% for message in messages %}
+  <div>  <h3>{{ message }}</h3> </div>
+  {% endfor %}
   <p>
-     Server Name: {{internal_id}}
+     Server Name: {{ request.session.server }}
   </p>
-  <form method="post" enctype="multipart/form-data" action="Booki">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
       <label class="form-label" for="customFile">Enter your Zip File</label>
-    <input type="file"  class="form-control" name="file" aria-label="File browser example" />
+    <input type="file" class="form-control" name="file" aria-label="File browser example" />
 
-    <button type="submit" class="btn btn-danger" name="dataUpload"  value="{{internal_id}}">Upload</button>
+    <button type="submit" class="btn btn-danger" name="dataUpload"  value="{{ request.session.server }}">Upload</button>
     </form>
 
 
 
       <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
-  <label class="form-check-label" for="flexCheckIndeterminate">
-    Augmentation
-  </label>
+<input type="radio" name="augmentation" value="augmentation-yes">Augmentation
 </div>
+<div>
+    <label for="l_box1"><input type="checkbox" name="model" value="yolov" id="l_box1">YOLOV</label>
+    <label for="d_box2"><input type="checkbox" name="model" value="mrcnn" id="d_box2">MRCNN</label>
+    <label for="d_box3"><input type="checkbox" name="model" value="unet" id="d_box3">UNET</label>
 
-
-
-<div class="dropdown">
-  <button class="dropbtn">Dropdown</button>
-  <div class="dropdown-content">
-  <a href="#">Yolo </a>
-  <a href="#">Unet</a>
-  <a href="#">Mask Rccn</a>
-  </div>
 </div>
-
   </body>
 
 </html>

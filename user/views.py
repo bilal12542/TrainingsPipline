@@ -1,14 +1,15 @@
-import sys
+import django.contrib.auth.models
 from django.shortcuts import render, redirect
-from server.models import ServerManagement
+from django.db.models import Q
 from .form import AddReservation
+from django.utils import timezone
 from django.contrib import messages
-from server.models import ServerReservation
+from server.models import ServerReservation, ServerManagement
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.storage import FileSystemStorage
 from .client import *
+from itertools import chain
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 
 
 # parentdir = Path(os.getcwd())
@@ -24,20 +25,6 @@ def deletezip():
             f.unlink()
         except OSError as e:
             print("Error: %s : %s" % (f, e.strerror))
-
-
-def upload(request):
-    if request.method == "POST":
-        if os.listdir(os.path.join(parentdir, 'media')):
-            deletezip()
-        uploaded_file = request.FILES['file']
-        fs = FileSystemStorage()
-        fs.save(uploaded_file.name, uploaded_file)
-        internal_id = request.POST.get('dataUpload')
-        # print(internal_id)
-        SendFile(internal_id)
-
-    return render(request, 'user/login/dashboard.html')
 
 
 def user_login(request):
@@ -91,11 +78,29 @@ def reservation(request):
     return render(request, 'user/login/reservation.html', context)
 
 
-def book(request):
-    if request.method == 'POST':
-        internal = request.POST.get('internal-id')
-
-    return render(request, 'user/login/booked.html', {'internal_id': internal})
+def book_now(request):
+    if "server" in request.POST:
+        request.session['server'] = request.POST.get('server')
+        server = ServerManagement.objects.get(id=request.POST.get('server'))
+        user = django.contrib.auth.models.User.objects.get(id=request.user.id)
+        bnow = ServerReservation.objects.create(server_id=server, user_id=user,
+                                                reservation_time=timezone.now() + timezone.timedelta(seconds=5),
+                                                end_time=timezone.now() + timezone.timedelta(hours=1))
+        bnow.save()
+    elif 'dataUpload' in request.POST:
+        try:
+            if os.listdir(os.path.join(parentdir, 'media')):
+                deletezip()
+            uploaded_file = request.FILES['file']
+            fs = FileSystemStorage()
+            fs.save(uploaded_file.name, uploaded_file)
+            server = request.POST.get('dataUpload')
+            # print(internal_id)
+            SendFile(server)
+            return render(request, 'user/login/dashboard.html')
+        except:
+            messages.error(request, "Connection is not established or the file is not selected!")
+    return render(request, 'user/login/booked.html')
 
 
 @login_required(login_url="login")
@@ -105,16 +110,24 @@ def dashboard(request):
 
 @login_required(login_url="login")
 def available_server(request):
-    server_res = ServerManagement.objects.all()
+    servers = ServerManagement.objects.all()
+    booked_server = ServerReservation.objects.filter(Q(end_time__gte=timezone.now()),
+                                                     Q(reservation_time__lte=timezone.now()))
+    # free_server = avail_server | booked_server
+    setelement = set()
+    for f in booked_server:
+        if f.server_id in servers:
+            setelement.add(f.server_id)
     dt = []
-    for i in server_res:
+    for i in servers:
         dt += [
             {
                 'servername': i.server_name,
                 'ram': i.ram,
                 'processor': i.processor,
                 'available': i.enable,
-                'server_id': i.id
+                'status': (0 if i in setelement or not i.enable else 1),
+                'server_id': i.id,
             }
         ]
     return render(request, 'user/login/available_server.html', {'ServerData': dt})
