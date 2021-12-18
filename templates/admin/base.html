@@ -3,7 +3,7 @@
                 {% if site_url %}
                     <a href="{{ site_url }}">View Site</a> /
                 {% endif %}
-                    <a href="{% url 'graph' %}">Monitor</a> /
+                    <a href="{% url 'monitor' %}">Monitor</a> /
                 {% if user.is_active and user.is_staff %}
                     {% url 'django-admindocs-docroot' as docsroot %}
                     {% if docsroot %}
@@ -15,3 +15,7 @@
                 {% endif %}
                 <a href="{% url 'admin:logout' %}">Logout</a>
             {% endblock %}
+
+{% block content %}
+
+{% endblock %}

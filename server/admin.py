@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import *
 from django.utils.html import format_html
+from django.contrib.auth.models import User
 
 
 class ServerAdmin(admin.ModelAdmin):
@@ -14,7 +15,9 @@ class ServerAdmin(admin.ModelAdmin):
         for var in result:
             if var.reservation_time < timezone.now() < var.end_time:
                 return var.user_id
+
         return None
+
     # def online_Server(self, request, queryset):
     #     queryset.update(enable=True)
     #
@@ -31,7 +34,6 @@ class ReservationAdmin(admin.ModelAdmin):
     model = ServerReservation
     list_display = ('server_id', 'user_id', 'reservation_time', 'end_time', 'system_occupied')
 
-
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
         form.base_fields['server_id'].queryset = ServerManagement.objects.filter(enable__iexact=1)
@@ -44,9 +46,27 @@ class ReservationAdmin(admin.ModelAdmin):
             return "Completed"
         return "On waiting"
 
+
 class CpuUsageAdmin(admin.ModelAdmin):
     list_display = ('server_id', 'cpu', 'ram')
 
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name', 'system_occupied', 'is_staff', 'is_superuser')
+
+    # list_filter = ('is_staff', 'is_superuser')
+
+    def system_occupied(self, obj):
+        result = ServerReservation.objects.filter(user_id=obj.id)
+
+        for var in result:
+            if var.reservation_time < timezone.now() < var.end_time:
+                return var.server_id
+        return None
+
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 # Register your models here.
 admin.site.register(ServerManagement, ServerAdmin)
 admin.site.register(ServerReservation, ReservationAdmin)

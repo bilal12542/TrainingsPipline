@@ -1,3 +1,4 @@
+import django.contrib.auth.models
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -24,12 +25,12 @@ class ServerManagement(models.Model):
 
 class ServerReservation(models.Model):
     server_id = models.ForeignKey(ServerManagement, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(user.models.User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(django.contrib.auth.models.User, on_delete=models.CASCADE)
     reservation_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField(default=timezone.now() + datetime.timedelta(hours=2))
 
     def clean(self):
-        if self.reservation_time > self.end_time :
+        if self.reservation_time > self.end_time:
             raise ValidationError('reservation time date is after end time.')
         elif timezone.now() > self.reservation_time:
             raise ValidationError('reservation time date is before current time.')
@@ -39,8 +40,8 @@ class ServerReservation(models.Model):
     #         return False
     #     return True
 
+
 class CpuUsage(models.Model):
     server_id = models.ForeignKey(ServerManagement, on_delete=models.CASCADE)
     cpu = models.FloatField(default=0)
     ram = models.FloatField(default=0)
-

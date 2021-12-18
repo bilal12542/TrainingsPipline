@@ -20,7 +20,9 @@ from django.conf import settings
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('server/', include('server.urls')),
-    path('', include('user.urls')),
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+                  path('admin/', admin.site.urls),
+                  path('server/', include('server.urls')),
+                  path('', include('user.urls')),
+                  # path('', include('django.contrib.auth.urls')),
+
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

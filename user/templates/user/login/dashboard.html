@@ -1,7 +1,3 @@
-
-
-
-<!DOCTYPE html>
 <html>
 <head>
     <!-- Latest compiled and minified CSS -->
@@ -22,14 +18,19 @@
         color: #c4b7a6;
       }
 
+
     </style>
     <meta charset="UTF-8">
     <title>Server Availablity </title>
 </head>
 <body>
-
+{% for message in messages %}
+<div><h4>{{ message }}</h4></div>
+{% endfor %}
 <button type="button" onclick="location.href='{% url 'available-server' %}'" class="btn btn-info">Available Server
 </button>
+<a target="_blank" href="{% url 'logout' %}">log Out</a>
+
 
 </body>
 </html>

@@ -34,6 +34,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
+
     </style>
     <meta charset="UTF-8">
     <title>Server Availablity </title>
@@ -58,14 +59,15 @@ tr:nth-child(even) {
             {% if data.available == True %}
             <form method='post' action="Book">
                 {% csrf_token %}
-            <button  type="submit"  class="btn btn-success" name='internal-id' value="{{data.servername}}" > Book Now</button>
+                <button type="submit" class="btn btn-success" name='internal-id' value="{{ data.server_id }}"> Book Now
+                </button>
             </form>
             {% endif %}
-            <form method="post" action="server-reservation">
+            <form method="post" action="{% url 'reservation' %}">
                 {% csrf_token %}
-            <button  type="submit"  name="res-id" value="{{data.servername}}" class="btn btn-warning">Reserve
-            </button>
-                </form>
+                <button type="submit" name="server" value="{{ data.server_id }}" class="btn btn-warning">Reserve
+                </button>
+            </form>
         </td>
     </tr>
     {% endfor %}

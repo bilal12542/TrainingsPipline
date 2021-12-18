@@ -75,7 +75,7 @@ def server_status_update():
 
             except:
                 result = ServerManagement.objects.filter(ip_addr__iexact=all_address[i][0]).update(enable=False)
-                CpuUsage.objects.filter(server_id__gt=result).delete()
+                CpuUsage.objects.filter(server_id=result).delete()
                 print("Connection is lost! Ip: ", all_address[i][0])
                 del all_connections[i]
                 del all_address[i]
