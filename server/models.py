@@ -23,6 +23,17 @@ class ServerManagement(models.Model):
         return self.server_name
 
 
+class ServerReservationManager(models.Manager):
+    def check_availability(self, start, end):
+        return not (
+            super()
+                .get_queryset()
+                .filter(reservation_time__gte=start)
+                .filter(end_time__lte=end)
+                .exists()
+        )
+
+
 class ServerReservation(models.Model):
     server_id = models.ForeignKey(ServerManagement, on_delete=models.CASCADE)
     user_id = models.ForeignKey(django.contrib.auth.models.User, on_delete=models.CASCADE)

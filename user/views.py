@@ -8,7 +8,6 @@ from server.models import ServerReservation, ServerManagement
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.storage import FileSystemStorage
 from .client import *
-from itertools import chain
 from django.contrib.auth.decorators import login_required
 
 
@@ -60,10 +59,8 @@ def reservation(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         context['form'] = AddReservation(request.POST)
-        # print(context['form'].data['server_id'])
+        print(context['form']['reservation_time'].value())
         # check whether it's valid:
-        # context['form'].fields['server_id'].initial = context['server_id']
-
         if context['form'].is_valid():
             del request.session['server']
             # process the data in form.cleaned_data as required
@@ -83,6 +80,9 @@ def book_now(request):
         request.session['server'] = request.POST.get('server')
         server = ServerManagement.objects.get(id=request.POST.get('server'))
         user = django.contrib.auth.models.User.objects.get(id=request.user.id)
+
+        # make a function which will add remaining time to book now before starting reservation time
+
         bnow = ServerReservation.objects.create(server_id=server, user_id=user,
                                                 reservation_time=timezone.now() + timezone.timedelta(seconds=5),
                                                 end_time=timezone.now() + timezone.timedelta(hours=1))
