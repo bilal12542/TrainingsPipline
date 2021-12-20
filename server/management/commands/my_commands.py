@@ -29,7 +29,7 @@ def bind_socket():
         global s
         # hostname = socket.gethostname()
         # IPAddr = socket.gethostbyname(hostname)
-        host = '192.168.88.140'
+        host = '0.0.0.0'
         port = 5001
         print("Connection established: " + str(host) + ':' + str(port))
         s.bind((host, port))

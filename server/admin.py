@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 from django.utils.html import format_html
 from django.contrib.auth.models import User
-
+from django.contrib.auth.admin import UserAdmin
 
 class ServerAdmin(admin.ModelAdmin):
     exclude = ['server_name']
@@ -51,11 +51,20 @@ class CpuUsageAdmin(admin.ModelAdmin):
     list_display = ('server_id', 'cpu', 'ram')
 
 
-class UserAdmin(admin.ModelAdmin):
+class UserAdd(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'system_occupied', 'is_staff', 'is_superuser')
+    ordering = ("is_superuser",)
 
-    # list_filter = ('is_staff', 'is_superuser')
+    fieldsets = (
+        (None, {'fields': ('username', 'password','email', 'first_name', 'last_name', 'is_staff',)}),
+        )
+    add_fieldsets = (
+        (None, {
+            'fields': ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'is_staff', 'is_active')}
+            ),
+        )
 
+    filter_horizontal = ()
     def system_occupied(self, obj):
         result = ServerReservation.objects.filter(user_id=obj.id)
 
@@ -66,7 +75,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
+admin.site.register(User, UserAdd)
 # Register your models here.
 admin.site.register(ServerManagement, ServerAdmin)
 admin.site.register(ServerReservation, ReservationAdmin)
