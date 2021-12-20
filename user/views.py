@@ -59,7 +59,6 @@ def reservation(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         context['form'] = AddReservation(request.POST)
-        print(context['form']['reservation_time'].value())
         # check whether it's valid:
         if context['form'].is_valid():
             del request.session['server']
@@ -82,11 +81,27 @@ def book_now(request):
         user = django.contrib.auth.models.User.objects.get(id=request.user.id)
 
         # make a function which will add remaining time to book now before starting reservation time
+        if ServerReservation.objects.filter(
+                Q(reservation_time__gt=timezone.now()),
+                Q(reservation_time__lt=timezone.now() + timezone.timedelta(hours=1))).filter(server_id=server).exists():
+            reserved_time = ServerReservation.objects.filter(
+                Q(reservation_time__gt=timezone.now()),
+                Q(reservation_time__lt=timezone.now() + timezone.timedelta(hours=1))).filter(server_id=server)
+            for var in reserved_time:
+                time = var.reservation_time
+                bnow_2 = ServerReservation.objects.create(server_id=server, user_id=user,
+                                                          reservation_time=timezone.now() + timezone.timedelta(
+                                                              seconds=5),
+                                                          end_time=time)
+                bnow_2.save()
+                break
+        else:
 
-        bnow = ServerReservation.objects.create(server_id=server, user_id=user,
-                                                reservation_time=timezone.now() + timezone.timedelta(seconds=5),
-                                                end_time=timezone.now() + timezone.timedelta(hours=1))
-        bnow.save()
+            bnow = ServerReservation.objects.create(server_id=server, user_id=user,
+                                                    reservation_time=timezone.now() + timezone.timedelta(seconds=5),
+                                                    end_time=timezone.now() + timezone.timedelta(hours=1))
+            bnow.save()
+
     elif 'dataUpload' in request.POST:
         try:
             if os.listdir(os.path.join(parentdir, 'media')):
@@ -136,3 +151,26 @@ def available_server(request):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
+def booked_server(request):
+    reservations = ServerReservation.objects.filter(user_id=request.user.id)
+    booked_server = ServerReservation.objects.filter(Q(end_time__gte=timezone.now()),
+                                                     Q(reservation_time__lte=timezone.now())).filter(
+        user_id=request.user.id)
+    setelement = []
+    for f in booked_server:
+        setelement.append(f)
+    dt = []
+    for i in reservations:
+        dt += [
+            {
+                'servername': i.server_id.server_name,
+                'ram': i.server_id.ram,
+                'processor': i.server_id.processor,
+                'available': i.server_id.enable,
+                'status': (1 if i in setelement and i.server_id.enable else 0),
+                'server_id': i.id,
+            }
+        ]
+    return render(request, 'user/login/reserved_servers.html', {'ServerData': dt})

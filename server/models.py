@@ -45,11 +45,19 @@ class ServerReservation(models.Model):
             raise ValidationError('reservation time date is after end time.')
         elif timezone.now() > self.reservation_time:
             raise ValidationError('reservation time date is before current time.')
-    # @property
-    # def available(self):
-    #     if self.end_time > timezone.now().strftime('%Y-%m-%d %H:%M:%S'):
-    #         return False
-    #     return True
+        # elif ServerReservation.objects.filter(Q(end_time__gte=self.reservation_time),
+        #                                       Q(reservation_time__lte=self.reservation_time)).exists():
+        #     raise ValidationError("Reservation time is booked by someone else!")
+        # elif ServerReservation.objects.filter(Q(end_time__gte=self.end_time),
+        #                                       Q(reservation_time__lte=self.end_time)).exists():
+        #     raise ValidationError("End time is booked by someone else!")
+
+
+# @property
+# def available(self):
+#     if self.end_time > timezone.now().strftime('%Y-%m-%d %H:%M:%S'):
+#         return False
+#     return True
 
 
 class CpuUsage(models.Model):

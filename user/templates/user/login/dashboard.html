@@ -29,7 +29,9 @@
 {% endfor %}
 <button type="button" onclick="location.href='{% url 'available-server' %}'" class="btn btn-info">Available Server
 </button>
-<a target="_blank" href="{% url 'logout' %}">log Out</a>
+<button type="button" onclick="location.href='{% url 'booked-server' %}'" class="btn btn-info">Booked Servers
+</button>
+<a href="{% url 'logout' %}">log Out</a>
 
 
 </body>

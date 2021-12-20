@@ -65,11 +65,11 @@ def server_status_update():
                     ServerManagement.objects.create(server_name=server_name, ip_addr=all_address[i][0], ram=ram,
                                                     processor=processor, enable=True)
                 elif ServerManagement.objects.filter(server_name=server_name, ip_addr=all_address[i][0],
-                                                         enable=False).exists():
+                                                     enable=False).exists():
                     ServerManagement.objects.filter(server_name=server_name, ip_addr=all_address[i][0]).update(
                         enable=True)
                 elif ServerManagement.objects.filter(server_name=server_name, ip_addr=all_address[i][0],
-                                                         enable=True).exists():
+                                                     enable=True).exists():
                     result = ServerManagement.objects.get(server_name=server_name, ip_addr=all_address[i][0])
                     CpuUsage.objects.create(server_id=result, cpu=ls[3], ram=0)
 
@@ -79,7 +79,6 @@ def server_status_update():
                 print("Connection is lost! Ip: ", all_address[i][0])
                 del all_connections[i]
                 del all_address[i]
-
 
 
 # Create worker threads
