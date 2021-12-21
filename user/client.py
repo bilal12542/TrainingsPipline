@@ -26,7 +26,7 @@ def SendFile(data):
     for f in Path(os.path.join(parentdir, 'media')).glob('*.zip'):
         filename = f
     filesize = os.path.getsize(filename)
-    serverdata = ServerManagement.objects.get(server_name=data)
+    serverdata = ServerManagement.objects.get(id=data)
     host = str(serverdata.ip_addr)
     s = socket.socket()
     print(f"[+] Connecting to {host}:{port}")

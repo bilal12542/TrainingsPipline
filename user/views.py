@@ -75,11 +75,11 @@ def reservation(request):
 
 
 def book_now(request):
-    if ServerReservation.objects.filter(Q(end_time__gte=timezone.now()),
-                                        Q(reservation_time__lte=timezone.now())).filter(user_id=request.user.id):
-        del request.session['server']
-        redirect('/')
-    elif "server" in request.POST:
+    # if ServerReservation.objects.filter(Q(end_time__gte=timezone.now()),
+    #                                     Q(reservation_time__lte=timezone.now())).filter(user_id=request.user.id):
+    #     del request.session['server']
+    #     redirect('/')
+    if "server" in request.POST:
         request.session['server'] = request.POST.get('server')
         server = ServerManagement.objects.get(id=request.POST.get('server'))
         user = django.contrib.auth.models.User.objects.get(id=request.user.id)
@@ -105,16 +105,24 @@ def book_now(request):
                                                     reservation_time=timezone.now() + timezone.timedelta(seconds=5),
                                                     end_time=timezone.now() + timezone.timedelta(hours=1))
             bnow.save()
+    elif 'use-now' in request.POST:
+        request.session['server'] = request.POST.get('use-now')
 
     elif 'dataUpload' in request.POST:
         try:
             if os.listdir(os.path.join(parentdir, 'media')):
                 deletezip()
             uploaded_file = request.FILES['file']
+            augmentationfile = request.POST.get('augmentation')
+            modelfile = request.POST.get('model')
+            if augmentationfile is not None:
+                zipfilename = modelfile + augmentationfile + uploaded_file.name
+            elif augmentationfile is None:
+                zipfilename = modelfile + uploaded_file.name
             fs = FileSystemStorage()
-            fs.save(uploaded_file.name, uploaded_file)
+            fs.save(zipfilename, uploaded_file)
             server = request.POST.get('dataUpload')
-            # print(internal_id)
+
             SendFile(server)
             return render(request, 'user/login/dashboard.html')
         except:
@@ -174,7 +182,7 @@ def booked_server(request):
                 'processor': i.server_id.processor,
                 'available': i.server_id.enable,
                 'status': (1 if i in setelement and i.server_id.enable else 0),
-                'server_id': i.id,
+                'server_id': i.server_id.id,
             }
         ]
     return render(request, 'user/login/reserved_servers.html', {'ServerData': dt})
