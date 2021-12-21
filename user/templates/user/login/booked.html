@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<!-- load static file -->
-{% load static %}
 
+{% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-           <!-- Latest compiled and minified CSS -->
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="a12c27fd2c259d630b923998-text/javascript"></script>
 
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <style>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" type="a12c27fd2c259d630b923998-text/javascript"></script>
+<style>
       body {
         background-color: #d5e1df;
         align-items: center;
@@ -95,36 +92,29 @@
   background-color: #3e8e41;
 }
     </style>
-    <title>Django</title>
-  </head>
-  <body>
-<button onclick="history.back()">Back</button>
-
-  {% for message in messages %}
-  <div>  <h3>{{ message }}</h3> </div>
-  {% endfor %}
-  <p>
-     Server Name: {{ request.session.server }}
-  </p>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-      <label class="form-label" for="customFile">Enter your Zip File</label>
-    <input type="file" class="form-control" name="file" aria-label="File browser example" />
-
-    <button type="submit" class="btn btn-danger" name="dataUpload"  value="{{ request.session.server }}">Upload</button>
-    </form>
-
-
-
-      <div class="form-check">
-<input type="radio" name="augmentation" value="augmentation-yes">Augmentation
+<title>Django</title>
+</head>
+<body>
+<button onclick="if (!window.__cfRLUnblockHandlers) return false; history.back()" data-cf-modified-a12c27fd2c259d630b923998-="">Go Back</button>
+{% for message in messages %}
+<div> <h3>{{ message }}</h3> </div>
+{% endfor %}
+<p>
+Server Name: {{ request.session.server }}
+</p>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<label class="form-label" for="customFile">Enter your Zip File</label>
+<input type="file" class="form-control" name="file" aria-label="File browser example" />
+<button type="submit" class="btn btn-danger" name="dataUpload" value="{{ request.session.server }}">Upload</button>
+<div class="form-check">
+<input type="checkbox" name="augmentation" value="aug">Augmentation
 </div>
 <div>
-    <label for="l_box1"><input type="checkbox" name="model" value="yolov" id="l_box1">YOLOV</label>
-    <label for="d_box2"><input type="checkbox" name="model" value="mrcnn" id="d_box2">MRCNN</label>
-    <label for="d_box3"><input type="checkbox" name="model" value="unet" id="d_box3">UNET</label>
-
+<label for="l_box1"><input type="radio" name="model" value="yolov" id="l_box1">YOLOV</label>
+<label for="d_box2"><input type="radio" name="model" value="mrcnn" id="d_box2">MRCNN</label>
+<label for="d_box3"><input type="radio" name="model" value="unet" id="d_box3">UNET</label>
 </div>
-  </body>
-
+</form>
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="a12c27fd2c259d630b923998-|49" defer=""></script></body>
 </html>
