@@ -27,9 +27,8 @@ def bind_socket():
         global host
         global port
         global s
-        # hostname = socket.gethostname()
-        # IPAddr = socket.gethostbyname(hostname)
-        host = '192.168.88.140'
+        ipAddr = [(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+        host = ipAddr
         port = 5001
         print("Connection established: " + str(host) + ':' + str(port))
         s.bind((host, port))
