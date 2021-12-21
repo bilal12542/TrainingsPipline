@@ -75,7 +75,11 @@ def reservation(request):
 
 
 def book_now(request):
-    if "server" in request.POST:
+    if ServerReservation.objects.filter(Q(end_time__gte=timezone.now()),
+                                        Q(reservation_time__lte=timezone.now())).filter(user_id=request.user.id):
+        del request.session['server']
+        redirect('/')
+    elif "server" in request.POST:
         request.session['server'] = request.POST.get('server')
         server = ServerManagement.objects.get(id=request.POST.get('server'))
         user = django.contrib.auth.models.User.objects.get(id=request.user.id)
