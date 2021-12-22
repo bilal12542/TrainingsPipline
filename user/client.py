@@ -33,7 +33,7 @@ def SendFile(data):
     s.connect((host, port))
     print("[+] Connected.")
     # send the filename and filesize
-    s.send(f"{filename}{SEPARATOR}{filesize}".encode())
+    s.send(f"{filename}{SEPARATOR}{filesize}".encode('ISO-8859-1'))
 
 
     # # start sending the file
